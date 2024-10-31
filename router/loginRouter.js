@@ -5,6 +5,6 @@ import decorateHTML from "../middleware/common/decorateHTML.js";
 
 const router = express.Router();
 
-router.get("/", decorateHTML, getLogin);
+router.get("/", decorateHTML("Login"), getLogin);
 
 export default router;

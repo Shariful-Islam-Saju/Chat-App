@@ -4,6 +4,6 @@ import decorateHTML from "../middleware/common/decorateHTML.js";
 
 const router = express.Router();
 
-router.get("/", decorateHTML, getUser);
+router.get("/", decorateHTML('User'), getUser);
 
 export default router;
