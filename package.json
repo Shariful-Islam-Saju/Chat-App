@@ -5,9 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development nodemon app.js",
-    "prod": "NODE_ENV=production nodemon app.js"
+    "start": "set NODE_ENV=development&& nodemon app.js",
+    "prod": "set NODE_ENV=production&& nodemon app.js"
   },
   "author": "Shariful Islam",
   "license": "ISC",
