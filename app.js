@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url"; // Import for fileURLToPath
 import cookieParser from "cookie-parser";
+import loginRouter from  "./router/loginRouter.js";
+
 
 // local imports
 import { notFound, errorHandler } from "./middleware/common/errorHandler.js";
@@ -52,10 +54,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routing
 // Example route (create more as needed)
 
-// app.get("/", (req, res) => {
-//   res.render("index"); // Render an 'index.ejs' view from the 'views' directory
-// });
-
+app.use('/', loginRouter)
 // Error Handling
 app.use(notFound); // Handle 404 errors
 app.use(errorHandler); // Global error handler
