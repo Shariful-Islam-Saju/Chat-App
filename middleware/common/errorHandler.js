@@ -5,7 +5,15 @@ export function notFound(req, res, next) {
 }
 
 export function errorHandler(err, req, res, next) {
-  res.render("error", {
-    error: "This is  an error message",
-  });
+  res.locals.errors =
+    process.env.NODE_ENV === "development" ? err : { message: err.message };
+  res.status(err.status || 500);
+
+  if (!res.locals.html) {
+    res.render("error", {
+      error: res.locals.errors,
+    });
+  } else {
+    res.json(res.locals.errors)
+  }
 }

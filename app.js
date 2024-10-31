@@ -51,9 +51,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routing
 // Example route (create more as needed)
-app.get("/", (req, res) => {
-  res.render("index"); // Render an 'index.ejs' view from the 'views' directory
-});
+
+// app.get("/", (req, res) => {
+//   res.render("index"); // Render an 'index.ejs' view from the 'views' directory
+// });
 
 // Error Handling
 app.use(notFound); // Handle 404 errors
