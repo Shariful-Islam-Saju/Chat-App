@@ -5,10 +5,12 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url"; // Import for fileURLToPath
 import cookieParser from "cookie-parser";
-import loginRouter from  "./router/loginRouter.js";
-
 
 // local imports
+
+import loginRouter from "./router/loginRouter.js";
+import userRouter from "./router/userRouter.js";
+import inboxRouter from "./router/inboxRouter.js";
 import { notFound, errorHandler } from "./middleware/common/errorHandler.js";
 
 dotenv.config();
@@ -34,8 +36,6 @@ async function connectionToMongoDB() {
   }
 }
 
-connectionToMongoDB();
-
 const app = express();
 const port = process.env.PORT || 3000; // Default port
 
@@ -52,9 +52,11 @@ app.set("views", path.join(__dirname, "views")); // Specify the views directory
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routing
-// Example route (create more as needed)
 
-app.use('/', loginRouter)
+app.use("/", loginRouter);
+app.use("/users", userRouter);
+app.use("/inbox", inboxRouter);
+
 // Error Handling
 app.use(notFound); // Handle 404 errors
 app.use(errorHandler); // Global error handler
