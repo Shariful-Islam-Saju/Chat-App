@@ -54,11 +54,7 @@ export const addUserValidator = [
     }),
 
   // Validate 'password' field
-  check("password")
-    .isStrongPassword() // Ensures password strength
-    .withMessage(
-      "Password must be at least 8 characters long, and must contain at least one uppercase letter"
-    ),
+ 
 ];
 
 // Function to handle validation errors and delete any uploaded file if validation fails
