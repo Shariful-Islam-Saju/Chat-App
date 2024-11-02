@@ -1,7 +1,8 @@
 import { check } from "express-validator";
 import People from "../../model/people";
 import createError from "http-errors";
-const validator = [
+ 
+export const validator = [
   check("name")
     .isLength({ min: 1 })
     .withMessage("Name must be at least 1 character long")
@@ -38,4 +39,10 @@ const validator = [
         throw createError(error.message);
       }
     }),
+
+  check("password")
+    .isStrongPassword()
+    .withMessage(
+      "Password must be at least 8 characters long, and must contain at least one uppercase letter"
+    ),
 ];
