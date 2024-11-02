@@ -28,7 +28,7 @@ const __dirname = path.dirname(__filename); // Get the directory name from the f
 // MongoDB Connection
 async function connectionToMongoDB() {
   try {
-    await mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}/Chat`);
+    await mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}`);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
@@ -36,7 +36,7 @@ async function connectionToMongoDB() {
   }
 }
 
-// connectionToMongoDB();
+connectionToMongoDB();
 
 const app = express();
 const port = process.env.PORT || 3000; // Default port

@@ -1,28 +1,33 @@
-import { check, validationResult } from "express-validator";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-import createError from "http-errors";
-import { unlink } from "fs";
+import { check, validationResult } from "express-validator"; // Import validators
+import path, { dirname } from "path"; // Import path utilities
+import { fileURLToPath } from "url"; // Utility to get the current file path
+import createError from "http-errors"; // Error handling library
+import { unlink } from "fs"; // File system module for file operations
 
-import People from "../../model/people.js";
+import People from "../../model/people.js"; // Import People model
 
+// Determine the current file path and directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Validation rules for adding a new user
 export const addUserValidator = [
+  // Validate and sanitize 'name' field
   check("name")
-    .isLength({ min: 1 })
+    .isLength({ min: 1 }) // Minimum length of 1 character
     .withMessage("Name must be at least 1 character long")
-    .isAlpha("en-US", { ignore: " -" })
+    .isAlpha("en-US", { ignore: " -" }) // Allow only letters, spaces, and hyphens
     .withMessage("Name must only contain letters")
-    .trim(),
+    .trim(), // Trim whitespace from input
 
+  // Validate and sanitize 'email' field
   check("email")
     .isEmail()
     .withMessage("Invalid email address")
     .trim()
     .custom(async (value) => {
       try {
+        // Check if email is already in use
         const user = await People.findOne({ email: value });
         if (user) {
           throw createError("Email already in use");
@@ -32,11 +37,13 @@ export const addUserValidator = [
       }
     }),
 
+  // Validate and sanitize 'mobile' field
   check("mobile")
-    .isMobilePhone("bn-BD", { strictMode: true })
+    .isMobilePhone("bn-BD", { strictMode: true }) // Validate Bangladeshi mobile numbers
     .withMessage("Invalid mobile number")
     .custom(async (value) => {
       try {
+        // Check if mobile number is already in use
         const user = await People.findOne({ mobile: value });
         if (user) {
           throw createError("Phone already in use");
@@ -46,30 +53,37 @@ export const addUserValidator = [
       }
     }),
 
+  // Validate 'password' field
   check("password")
-    .isStrongPassword()
+    .isStrongPassword() // Ensures password strength
     .withMessage(
       "Password must be at least 8 characters long, and must contain at least one uppercase letter"
     ),
 ];
 
+// Function to handle validation errors and delete any uploaded file if validation fails
 export function addUserValidationResult(req, res, next) {
-  const errors = validationResult(req);
-  const mappedErrors = errors.mapped();
+  const errors = validationResult(req); // Collect validation results
+  const mappedErrors = errors.mapped(); // Map errors to an object
 
   if (Object.keys(mappedErrors).length === 0) {
+    // If there are no validation errors, proceed to the next middleware
     return next();
   }
 
+  // If validation fails and a file was uploaded, delete the uploaded file
   if (req.files.length > 0) {
-    const fileName = req.files[0].filename;
-    unlink(path.join(__dirname, `../public/uploads/${fileName}`), (err) => {
+    const fileName = req.files[0].filename; // Get the uploaded file name
+    const filePath = path.join(__dirname, "../public/uploads", fileName); // Construct the file path
+
+    unlink(filePath, (err) => {
       if (err) {
-        console.error(err);
+        console.error("Failed to delete file:", err); // Log if file deletion fails
       }
     });
   }
 
+  // Respond with a 500 status and validation errors in JSON format
   res.status(500).json({
     errors: mappedErrors,
   });
