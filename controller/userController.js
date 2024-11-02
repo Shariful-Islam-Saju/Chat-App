@@ -1,8 +1,12 @@
 import bcrypt from "bcrypt";
 import People from "../model/people.js";
 
-export function getUser(req, res, next) {
-  res.render("users");
+export async function getUser(req, res, next) {
+  const users = await People.find();
+
+  res.render("users", {
+    users,
+  });
 }
 
 export async function addUser(req, res, next) {
@@ -14,9 +18,9 @@ export async function addUser(req, res, next) {
     // Check for uploaded files and assign the avatar
     if (req.files?.length > 0) {
       user.avatar = req.files[0].filename;
-      console.log(req.files)
-    }
       console.log(req.files);
+    }
+    console.log(req.files);
 
     // Create and save a new user
     const newUser = new People(user);

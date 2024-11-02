@@ -33,7 +33,7 @@ export const addUserValidator = [
           throw createError("Email already in use");
         }
       } catch (error) {
-        throw createError(error.message);
+        throw createError("An error occurred while checking the email.");
       }
     }),
 
@@ -49,18 +49,25 @@ export const addUserValidator = [
           throw createError("Phone already in use");
         }
       } catch (error) {
-        throw createError(error.message);
+        throw createError(
+          "An error occurred while checking the mobile number."
+        );
       }
     }),
 
   // Validate 'password' field
- 
+  check("password")
+    .isStrongPassword() // Ensure password strength
+    .withMessage(
+      "Password must be strong. Include at least one uppercase letter, one number, and one symbol."
+    ),
 ];
 
 // Function to handle validation errors and delete any uploaded file if validation fails
 export function addUserValidationResult(req, res, next) {
   const errors = validationResult(req); // Collect validation results
   const mappedErrors = errors.mapped(); // Map errors to an object
+  console.log("Validation Errors:", mappedErrors);
 
   if (Object.keys(mappedErrors).length === 0) {
     // If there are no validation errors, proceed to the next middleware
@@ -68,19 +75,23 @@ export function addUserValidationResult(req, res, next) {
   }
 
   // If validation fails and a file was uploaded, delete the uploaded file
-  if (req.files.length > 0) {
+  if (req.files && req.files.length > 0) {
     const fileName = req.files[0].filename; // Get the uploaded file name
     const filePath = path.join(__dirname, "../public/uploads", fileName); // Construct the file path
 
     unlink(filePath, (err) => {
       if (err) {
         console.error("Failed to delete file:", err); // Log if file deletion fails
+      } else {
+        console.log(
+          `File ${fileName} deleted successfully due to validation error.`
+        );
       }
     });
   }
 
-  // Respond with a 500 status and validation errors in JSON format
-  res.status(500).json({
+  // Respond with a 400 status (client error) and validation errors in JSON format
+  res.status(400).json({
     errors: mappedErrors,
   });
 }
