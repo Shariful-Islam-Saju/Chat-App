@@ -1,4 +1,4 @@
-import { uploder } from "../../utilities/singleFileUploader";
+import { uploder } from "../../utilities/singleFileUploader.js";
 
 export default function fileUpload(req, res, next) {
   const upload = uploder(
@@ -18,7 +18,7 @@ export default function fileUpload(req, res, next) {
         },
       });
     } else {
-      next()
+      next();
     }
   });
 }

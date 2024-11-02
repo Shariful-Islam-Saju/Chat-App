@@ -1,0 +1,119 @@
+<div class="manageUser-container">
+  <div id="title">
+    <h2>Manage Users</h2>
+  </div>
+
+  <div class="new-message-container new-user">
+    <a href="#" onclick="openModal()">+</a>
+  </div>
+
+  <div id="users-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Manage</th>
+        </tr>
+      </thead>
+      <tbody id="users-table">
+        <tr id="">
+          <td class="name">
+            <img src="./images/user1.png" />
+            <span>User 1</span>
+          </td>
+          <td>email@email.com</td>
+          <td class="manage">
+            <img src="./images/trash.png" alt="Delete" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="add-user-modal">
+  <div class="modal">
+    <a href="#" onclick="closeModal()" class="modal-close">+</a>
+    <div class="modal-title">
+      <h2>Create New User</h2>
+    </div>
+    <div class="modal-body">
+      <form
+        id="add-user-form"
+        method="post"
+        action="/users"
+        enctype="multipart/form-data"
+      >
+        <input type="text" placeholder="enter name" name="name" />
+        <p class="error name-error"></p>
+
+        <input type="text" placeholder="enter email" name="email" />
+        <p class="error email-error"></p>
+
+        <input type="text" placeholder="enter mobile" name="mobile" />
+        <p class="error mobile-error"></p>
+
+        <input type="password" placeholder="enter password" name="password" />
+        <p class="error password-error"></p>
+
+        <input type="file" name="avatar" />
+        <p class="error avatar-error"></p>
+
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  const modal = document.querySelector("#add-user-modal");
+  const form = document.querySelector("#add-user-form");
+  const successToast = Toastify({
+    text: "User Create  Successfully",
+    duration: 1000,
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const errPlace = document.querySelectorAll("p");
+    const inputError = document.querySelectorAll("input");
+
+    inputError.forEach((element) => {
+      element.classList.remove("error");
+    });
+    errPlace.forEach((element) => {
+      element.style.display = "none";
+    });
+
+    console.log("hi");
+    const formData = new FormData(form);
+    let response = await fetch("/users", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (result.errors) {
+      Object.keys(result.errors).forEach((fieldName) => {
+        form[fieldName].classList.add("error");
+        const errorPlaceHolder = document.querySelector(`.${fieldName}-error`);
+        errorPlaceHolder.innerHTML = result.errors[fieldName].msg;
+        errorPlaceHolder.style.display = "block";
+      });
+    } else {
+      successToast.showToast();
+      closeModal();
+      document.querySelector("p.error").style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
+  });
+  function closeModal() {
+    modal.style.display = "none";
+  }
+  function openModal() {
+    modal.style.display = "block";
+  }
+</script>

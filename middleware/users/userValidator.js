@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import createError from "http-errors";
 import { unlink } from "fs";
 
-import People from "../../model/people";
+import People from "../../model/people.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
