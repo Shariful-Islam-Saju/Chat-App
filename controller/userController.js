@@ -1,5 +1,12 @@
 import bcrypt from "bcrypt";
+import path, { dirname } from "path"; // Import path utilities
+import { fileURLToPath } from "url";
+import { unlink } from "fs";
+
 import People from "../model/people.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export async function getUser(req, res, next) {
   const users = await People.find();
@@ -34,5 +41,30 @@ export async function addUser(req, res, next) {
       message: "An error occurred while creating the user",
       error: error.message,
     });
+  }
+}
+
+// delete user
+
+export async function deleteUser(req, res, next) {
+  try {
+    const id = req.params.id;
+    const user = await People.findByIdAndDelete({ _id: id });
+    if (user.avatar) {
+      unlink(
+        path.join(__dirname, `/../public/uploads/avatars/${user.avatar}`),
+        (err) => {
+          if (err) {
+            console.error(err);
+          }
+        }
+      );
+    }
+
+    res.status(200).json({
+      message: "Remove User Successfully",
+    });
+  } catch (error) {
+    console.log(error);
   }
 }
