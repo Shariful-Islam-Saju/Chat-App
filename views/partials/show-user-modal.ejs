@@ -28,7 +28,8 @@
             <span><%= user.name %></span>
           </td>
           <td><%= user.email %></td>
-          <td class="manage">
+          <td class="manage" id="<%= user._id %>"  onclick="manageUser()">
+
             <img src="./images/trash.png" />
           </td>
         </tr>

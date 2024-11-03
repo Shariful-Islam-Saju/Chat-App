@@ -67,8 +67,6 @@ export const addUserValidator = [
 export function addUserValidationResult(req, res, next) {
   const errors = validationResult(req); // Collect validation results
   const mappedErrors = errors.mapped(); // Map errors to an object
-  console.log("Validation Errors:", mappedErrors);
-
   if (Object.keys(mappedErrors).length === 0) {
     // If there are no validation errors, proceed to the next middleware
     return next();
