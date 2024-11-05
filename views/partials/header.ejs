@@ -12,6 +12,30 @@
     <link rel="stylesheet" href="./stylesheets/style.css" />
     <script src="./js/toastify.js"></script>
   </head>
+    <script>
+      function toast(text) {
+        const  toastElement = Toastify({
+          text,
+          duration: 1000
+        })
+
+        return toastElement
+      }
+
+
+      async function logOut() {
+        const logOutToast = toast('Your  are logged out')
+
+        await fetch('/', {
+          method: 'DELETE',
+        })
+        logOutToast.showToast()
+        setTimeout(() => {
+          window.location.replace('/')
+
+        }, 1000);
+      }
+    </script>
   <body>
     <div class="menu">
       <div class="menu-item"><a href="/inbox">Inbox</a></div>

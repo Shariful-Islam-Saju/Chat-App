@@ -6,12 +6,13 @@ import {
   loginResult,
   loginValidator,
 } from "../middleware/login/loginValidator.js";
+import { redirectCheck } from "../middleware/common/checkLogin.js";
 
 const router = express.Router();
 
 const pageTitle = "Login";
 
-router.get("/", decorateHTML(pageTitle), getLogin);
+router.get("/", decorateHTML(pageTitle), redirectCheck, getLogin);
 
 router.post("/", decorateHTML(pageTitle), loginValidator, loginResult, login);
 
