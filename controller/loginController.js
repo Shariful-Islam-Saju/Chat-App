@@ -44,6 +44,15 @@ export async function login(req, res, next) {
 
     throw createError(401, "Login Failed!");
   } catch (error) {
-    next(error); // Call next with the error for middleware handling
+    res.render("index", {
+      data: {
+        userName: req.body.username,
+      },
+      errors: {
+        common: {
+          msg: error.message,
+        },
+      },
+    });
   }
 }
