@@ -29,5 +29,30 @@
         </form>
       </div>
     </div>
+
+    <script>
+      function toast(text) {
+        const  toastElement = Toastify({
+          text,
+          duration: 1000
+        })
+
+        return toastElement
+      }
+
+
+      async function logOut() {
+        const logOutToast = toast('Your  are logged out')
+
+        await fetch('/', {
+          method: 'DELETE',
+        })
+        logOutToast.showToast()
+        setTimeout(() => {
+          window.location.replace('/')
+
+        }, 1000);
+      }
+    </script>
   </body>
 </html>

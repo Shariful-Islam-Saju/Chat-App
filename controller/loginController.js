@@ -41,6 +41,7 @@ export async function login(req, res, next) {
         });
 
         res.locals.loggedInUser = userObject;
+        console.log(res.locals)
         return res.redirect("/inbox"); // Redirect to inbox or another page upon success
       }
     }
@@ -58,4 +59,9 @@ export async function login(req, res, next) {
       },
     });
   }
+}
+
+export async function logout(req, res, next) {
+  res.clearCookie(process.env.COOKIE_NAME);
+  res.send('Log Out')
 }
