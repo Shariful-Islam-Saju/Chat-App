@@ -6,10 +6,11 @@ import {
   addUserValidationResult,
   addUserValidator,
 } from "../middleware/users/userValidator.js";
+import { checkLogin } from "../middleware/common/checkLogin.js";
 
 const router = express.Router();
 
-router.get("/", decorateHTML("User"), getUser);
+router.get("/", decorateHTML("User"), checkLogin,  getUser);
 
 router.post(
   "/",
