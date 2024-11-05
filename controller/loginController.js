@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import createError from "http-errors";
-
 import People from "../model/people.js";
 
 export function getLogin(req, res, next) {
@@ -27,26 +26,30 @@ export async function login(req, res, next) {
           mobile: user.mobile,
           role: "user",
         };
+
+        // JWT signing and setting cookie
         const token = jwt.sign(userObject, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXPIRY,
+          expiresIn: process.env.JWT_EXPIRY, // e.g., '1d' for 1 day, or a number in seconds
         });
+
+        // Set cookie with maxAge in milliseconds
         res.cookie(process.env.COOKIE_NAME, token, {
           httpOnly: true,
-          maxAge: parseInt(process.env.JWT_EXPIRY, 10),
-          signed: true, // Fixed typo
-          secure: process.env.NODE_ENV === "production", // Set to true in production
+          maxAge: process.env.JWT_EXPIRY, // Multiply by 1000 if JWT_EXPIRY is in seconds
+          signed: true,
+          secure: process.env.NODE_ENV === "production",
         });
 
         res.locals.loggedInUser = userObject;
-        return res.render("index");
+        return res.redirect("/inbox"); // Redirect to inbox or another page upon success
       }
     }
 
-    throw createError(401, "Login Failed!");
+    throw createError(401, "Invalid username or password"); // Specific error message for invalid credentials
   } catch (error) {
     res.render("index", {
       data: {
-        userName: req.body.username,
+        username: req.body.username,
       },
       errors: {
         common: {

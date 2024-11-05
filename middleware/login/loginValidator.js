@@ -10,7 +10,9 @@ export const loginValidator = [
 export const loginResult = (req, res, next) => {
   const errors = validationResult(req);
   const mappedErrors = errors.mapped();
-  if (Object.keys(mappedErrors) === 0) {
+
+  // Corrected condition
+  if (Object.keys(mappedErrors).length === 0) {
     next();
   } else {
     res.render("index", {
