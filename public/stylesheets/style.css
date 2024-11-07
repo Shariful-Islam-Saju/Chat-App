@@ -288,7 +288,7 @@ input[type="submit"]:active {
 
 #search-container,
 #conversation-list,
-#new-message-container {
+.new-message-container {
   background: var(--secondary);
 }
 
@@ -377,7 +377,7 @@ input[type="submit"]:active {
   text-overflow: ellipsis;
 }
 
-#new-message-container {
+.new-message-container {
   display: grid;
   grid: 40px / 40px;
   align-content: center;
@@ -387,7 +387,7 @@ input[type="submit"]:active {
   padding: 0 15px;
 }
 
-#new-message-container a {
+.new-message-container a {
   display: grid;
   place-content: center center;
   background: #eee;
@@ -397,7 +397,7 @@ input[type="submit"]:active {
   font-size: 3.6rem;
 }
 
-#new-message-container a:hover {
+.new-message-container a:hover {
   transform: scale(1.05);
 }
 
