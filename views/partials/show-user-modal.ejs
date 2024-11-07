@@ -21,15 +21,18 @@
         <tr id="<%= user._id %>">
           <td class="name">
             <% if (user.avatar) { %>
-            <img src="./images/<%= user.avatar %>" />
+            <img src="/uploads/avatars/<%= user.avatar %>"/>
             <% } else { %>
             <img src="default.jpg" />
             <% } %>
             <span><%= user.name %></span>
           </td>
           <td><%= user.email %></td>
-          <td class="manage" id="<%= user._id %>" onclick="manageUser('<%= user._id %>')">
-
+          <td
+            class="manage"
+            id="<%= user._id %>"
+            onclick="manageUser('<%= user._id %>')"
+          >
             <img src="./images/trash.png" />
           </td>
         </tr>

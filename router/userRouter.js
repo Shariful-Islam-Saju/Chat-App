@@ -10,10 +10,11 @@ import { checkLogin } from "../middleware/common/checkLogin.js";
 
 const router = express.Router();
 
-router.get("/", decorateHTML("User"), checkLogin,  getUser);
+router.get("/", decorateHTML("User"), checkLogin, getUser);
 
 router.post(
   "/",
+  checkLogin,
   fileUpload,
   addUserValidator,
   addUserValidationResult,

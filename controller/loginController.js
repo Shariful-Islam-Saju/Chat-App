@@ -21,9 +21,11 @@ export async function login(req, res, next) {
 
       if (isValidPassword) {
         const userObject = {
+          id: user._id,
           name: user.name,
           email: user.email,
           mobile: user.mobile,
+          avatar: user.avatar,
           role: "user",
         };
 

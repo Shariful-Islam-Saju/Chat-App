@@ -61,11 +61,12 @@ export async function searchUser(req, res, next) {
 
 // add conversation
 export async function addConversation(req, res, next) {
+  console.log(req.user);
   try {
     const newConversation = new Conversation({
       creator: {
-        id: req.user.userid,
-        name: req.user.username,
+        id: req.user.id,
+        name: req.user.name,
         avatar: req.user.avatar || null,
       },
       participant: {
