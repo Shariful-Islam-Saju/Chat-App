@@ -1,5 +1,7 @@
 // external imports
 import createError from "http-errors";
+import moment from "moment";
+
 // internal imports
 import User from "../model/people.js";
 import Conversation from "../model/Conversation.js";
@@ -11,11 +13,13 @@ export async function getInbox(req, res, next) {
   try {
     const conversations = await Conversation.find({
       $or: [
-        { "creator.id": req.user.userid },
-        { "participant.id": req.user.userid },
+        { "creator.id": req.user.id },
+        { "participant.id": req.user.id },
       ],
     });
     res.locals.data = conversations;
+    res.locals.moment = moment
+    console.log(conversations)
     res.render("inbox");
   } catch (err) {
     next(err);
