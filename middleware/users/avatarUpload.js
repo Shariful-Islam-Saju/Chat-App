@@ -10,7 +10,6 @@ export default function fileUpload(req, res, next) {
 
   upload.any()(req, res, (err) => {
     if (err) {
-      console.log(err.message);
       res.status(500).json({
         error: {
           avatar: {

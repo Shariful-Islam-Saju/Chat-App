@@ -41,7 +41,6 @@ export async function login(req, res, next) {
         });
 
         res.locals.loggedInUser = userObject;
-        console.log(res.locals)
         return res.redirect("/inbox"); // Redirect to inbox or another page upon success
       }
     }

@@ -25,9 +25,7 @@ export async function addUser(req, res, next) {
     // Check for uploaded files and assign the avatar
     if (req.files?.length > 0) {
       user.avatar = req.files[0].filename;
-      console.log(req.files);
     }
-    console.log(req.files);
 
     // Create and save a new user
     const newUser = new People(user);
