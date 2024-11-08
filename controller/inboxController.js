@@ -19,7 +19,6 @@ export async function getInbox(req, res, next) {
     });
     res.locals.data = conversations;
     res.locals.moment = moment
-    console.log(conversations)
     res.render("inbox");
   } catch (err) {
     next(err);
@@ -65,7 +64,6 @@ export async function searchUser(req, res, next) {
 
 // add conversation
 export async function addConversation(req, res, next) {
-  console.log(req.user);
   try {
     const newConversation = new Conversation({
       creator: {
