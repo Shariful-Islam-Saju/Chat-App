@@ -11,7 +11,7 @@ function uploader(
   error_msg
 ) {
   // File upload folder
-  const UPLOADS_FOLDER = `${process.cwd()}/public/uploads/${subfolder_path}/`;
+  const UPLOADS_FOLDER = `${process.cwd()}/public/uploads/shareImg/${subfolder_path}/`;
 
   // Define the storage
   const storage = multer.diskStorage({

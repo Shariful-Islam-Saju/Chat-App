@@ -129,9 +129,6 @@ export async function sendMessage(req, res, next) {
       if (req.files && req.files.length > 0) {
         attachments = req.files.map((file) => file.filename);
       }
-
-      console.log(req.user);
-
       const newMessage = new Message({
         text: req.body.message,
         attachment: attachments,
