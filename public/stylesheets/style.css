@@ -502,7 +502,7 @@ input[type="submit"]:active {
 
 #chat-form {
   display: grid;
-  grid: 51px / 32px 1fr;
+  grid: 51px / 32px 1fr 80px;
   align-content: center;
   align-items: center;
   grid-gap: 15px;
@@ -512,6 +512,16 @@ input[type="submit"]:active {
   padding-left: 10px;
   padding-right: 22px;
   visibility: hidden;
+}
+
+#send-button {
+  padding: 14px 6px;
+  border: solid rgb(0, 0, 0) 1px ;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  background: var(--primary);
+  color: white;
 }
 
 #chat-form input {
