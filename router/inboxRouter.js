@@ -11,7 +11,7 @@ router.post("/search", checkLogin, searchUser);
 
 router.post("/conversation", checkLogin, addConversation);
 
-router.post("/messages/:conversation_id", checkLogin, getMessages);
+router.get("/messages/:conversation_id", checkLogin, getMessages);
 
 router.post("/message/", checkLogin);
 

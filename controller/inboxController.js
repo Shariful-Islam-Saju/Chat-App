@@ -12,13 +12,10 @@ import escape from "../utilities/escape.js";
 export async function getInbox(req, res, next) {
   try {
     const conversations = await Conversation.find({
-      $or: [
-        { "creator.id": req.user.id },
-        { "participant.id": req.user.id },
-      ],
+      $or: [{ "creator.id": req.user.id }, { "participant.id": req.user.id }],
     });
     res.locals.data = conversations;
-    res.locals.moment = moment
+    res.locals.moment = moment;
     res.render("inbox");
   } catch (err) {
     next(err);
@@ -99,7 +96,7 @@ export async function getMessages(req, res, next) {
     const messages = await Message.find({
       conversation_id: req.params.conversation_id,
     }).sort("-createdAt");
-
+console.log(messages)
     const { participant } = await Conversation.findById(
       req.params.conversation_id
     );
