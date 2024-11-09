@@ -96,7 +96,6 @@ export async function getMessages(req, res, next) {
     const messages = await Message.find({
       conversation_id: req.params.conversation_id,
     }).sort("-createdAt");
-console.log(messages)
     const { participant } = await Conversation.findById(
       req.params.conversation_id
     );
@@ -131,12 +130,14 @@ export async function sendMessage(req, res, next) {
         attachments = req.files.map((file) => file.filename);
       }
 
+      console.log(req.user);
+
       const newMessage = new Message({
         text: req.body.message,
         attachment: attachments,
         sender: {
-          id: req.user.userid,
-          name: req.user.username,
+          id: req.user.id,
+          name: req.user.name,
           avatar: req.user.avatar || null,
         },
         receiver: {
@@ -154,8 +155,8 @@ export async function sendMessage(req, res, next) {
         message: {
           conversation_id: req.body.conversationId,
           sender: {
-            id: req.user.userid,
-            name: req.user.username,
+            id: req.user.id,
+            name: req.user.name,
             avatar: req.user.avatar || null,
           },
           message: req.body.message,
@@ -169,6 +170,7 @@ export async function sendMessage(req, res, next) {
         data: result,
       });
     } catch (err) {
+      console.error(err);
       res.status(500).json({
         errors: {
           common: {

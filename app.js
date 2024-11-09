@@ -5,14 +5,14 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url"; // Import for fileURLToPath
 import cookieParser from "cookie-parser";
+import http from "http";
+import { Server } from "socket.io";
 
 // local imports
-
 import loginRouter from "./router/loginRouter.js";
 import userRouter from "./router/userRouter.js";
 import inboxRouter from "./router/inboxRouter.js";
 import { notFound, errorHandler } from "./middleware/common/errorHandler.js";
-
 
 dotenv.config();
 
@@ -29,7 +29,7 @@ const __dirname = path.dirname(__filename); // Get the directory name from the f
 // MongoDB Connection
 async function connectionToMongoDB() {
   try {
-    await mongoose.connect(`${process.env.MONGO_LOCAL_STRING}`);
+    await mongoose.connect(process.env.MONGO_LOCAL_STRING);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
@@ -41,6 +41,13 @@ connectionToMongoDB();
 
 const app = express();
 const port = process.env.PORT || 3000; // Default port
+
+// Create the HTTP server and attach Socket.IO
+const server = http.createServer(app);
+const io = new Server(server); // Attach Socket.IO to the HTTP server
+
+// Make io accessible globally (if needed in other modules)
+global.io = io;
 
 // Middleware
 app.use(express.json());
@@ -55,7 +62,6 @@ app.set("views", path.join(__dirname, "views")); // Specify the views directory
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routing
-
 app.use("/", loginRouter);
 app.use("/users", userRouter);
 app.use("/inbox", inboxRouter);
@@ -64,7 +70,16 @@ app.use("/inbox", inboxRouter);
 app.use(notFound); // Handle 404 errors
 app.use(errorHandler); // Global error handler
 
+// Socket.IO connection handling
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
 // Start the server
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+server.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

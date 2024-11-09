@@ -66,8 +66,8 @@
     const form = document.querySelector('#chat-form');
       const messageContainer = document.querySelector('#chat-message-list');
       const chatTitleContainer = document.querySelector('#conversation-partner');
-      const loggedinUserId = '<%= loggedInUser.userid %>';
-      const loggedinUserName = '<%= loggedInUser.username %>';
+      const loggedinUserId = '<%= loggedInUser.id %>';
+      const loggedinUserName = '<%= loggedInUser.name %>';
       let participant = null; // selected conversation participant object
       let current_conversation_id; // selected conversation id
 
@@ -80,7 +80,8 @@
         if(data.message.conversation_id == current_conversation_id) {
           // message class
           const messageClass = data.message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
-          
+          console.log(data)
+          console.log(messageClass)
           const senderAvatar = data.message.sender.avatar ? `<img src="./uploads/avatars/${data.message.sender.avatar}" alt="${data.message.sender.name}" />` : `<img src="./images/nophoto.png" alt="${data.message.sender.name}" />`;
 
           // message attachments

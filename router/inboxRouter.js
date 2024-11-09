@@ -1,7 +1,8 @@
 import express from "express";
-import { addConversation, getInbox, getMessages, searchUser } from "../controller/inboxController.js";
+import { addConversation, getInbox, getMessages, searchUser, sendMessage } from "../controller/inboxController.js";
 import decorateHTML from "../middleware/common/decorateHTML.js";
 import { checkLogin } from "../middleware/common/checkLogin.js";
+import attachmentUpload from "../middleware/inbox/atachmentUpload.js";
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.post("/conversation", checkLogin, addConversation);
 
 router.get("/messages/:conversation_id", checkLogin, getMessages);
 
-router.post("/message/", checkLogin);
+router.post("/message/", checkLogin, attachmentUpload, sendMessage );
 
 
 
