@@ -6,21 +6,28 @@ import {
   addUserValidationResult,
   addUserValidator,
 } from "../middleware/users/userValidator.js";
-import { checkLogin } from "../middleware/common/checkLogin.js";
+import { checkLogin, requireRole } from "../middleware/common/checkLogin.js";
 
 const router = express.Router();
 
-router.get("/", decorateHTML("User"), checkLogin, getUser);
+router.get(
+  "/",
+  decorateHTML("User"),
+  checkLogin,
+  requireRole(["admin"]),
+  getUser
+);
 
 router.post(
   "/",
   checkLogin,
+  requireRole(["admin"]),
   fileUpload,
   addUserValidator,
   addUserValidationResult,
   addUser
 );
 
-router.delete("/:id", deleteUser);
+router.delete("/:id", checkLogin, requireRole(["admin"]), deleteUser);
 
 export default router;

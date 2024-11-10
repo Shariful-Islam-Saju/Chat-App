@@ -53,3 +53,24 @@ export async function redirectCheck(req, res, next) {
     next(); // Continue to the next middleware or route handler
   }
 }
+
+export function requireRole(role) {
+  return function (req, res, next) {
+    console.log(req.user.role)
+    if (req.user.role && role.includes(req.user.role)) {
+      next();
+    } else {
+      if (res.locals.html) {
+        next(createError(401, "You are not authorized to access this page!"));
+      } else {
+        res.status(401).json({
+          errors: {
+            common: {
+              msg: "You are not authorized!",
+            },
+          },
+        });
+      }
+    }
+  };
+}
