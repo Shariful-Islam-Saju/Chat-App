@@ -29,7 +29,7 @@ const __dirname = path.dirname(__filename); // Get the directory name from the f
 // MongoDB Connection
 async function connectionToMongoDB() {
   try {
-    await mongoose.connect(process.env.MONGO_LOCAL_STRING);
+    await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
