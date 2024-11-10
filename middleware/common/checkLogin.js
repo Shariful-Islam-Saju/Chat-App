@@ -56,7 +56,6 @@ export async function redirectCheck(req, res, next) {
 
 export function requireRole(role) {
   return function (req, res, next) {
-    console.log(req.user.role)
     if (req.user.role && role.includes(req.user.role)) {
       next();
     } else {
