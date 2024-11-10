@@ -184,3 +184,14 @@ export async function sendMessage(req, res, next) {
     });
   }
 }
+
+export async function deleteCoversation (req, res, next) {
+  try {
+    const conversationId = req.params.conversationId;
+    await Conversation.findByIdAndDelete(conversationId);
+    await Message.deleteMany({ conversation_id: conversationId });
+    res.redirect("/inbox");
+  } catch (error) {
+    console.log(error)
+  }
+}

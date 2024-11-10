@@ -41,7 +41,7 @@
 
       <div id="chat-title">
         <span id="conversation-partner"></span>
-        <img src="./images/trash.png" alt="Delete Conversation" />
+        <img src="./images/trash.png" alt="Delete Conversation" id="deleteConversation" />
       </div>
 
       <!-- placeholder div if no messages are in messages area -->
@@ -64,9 +64,10 @@
     <script>
 
 
-    const form = document.querySelector('#chat-form');
+      const form = document.querySelector('#chat-form');
       const messageContainer = document.querySelector('#chat-message-list');
       const chatTitleContainer = document.querySelector('#conversation-partner');
+      const deleteCon = document.querySelector('#deleteConversation')
       const loggedinUserId = '<%= loggedInUser.id %>';
       const loggedinUserName = '<%= loggedInUser.name %>';
       let participant = null; // selected conversation participant object
@@ -81,8 +82,6 @@
         if(data.message.conversation_id == current_conversation_id) {
           // message class
           const messageClass = data.message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
-          console.log(data)
-          console.log(messageClass)
           const senderAvatar = data.message.sender.avatar ? `<img src="./uploads/avatars/${data.message.sender.avatar}" alt="${data.message.sender.name}" />` : `<img src="./images/nophoto.png" alt="${data.message.sender.name}" />`;
 
           // message attachments
@@ -181,6 +180,7 @@
                     }
 
                     chatTitleContainer.textContent = current_conversation_name;
+                    deleteCon.onclick = () => deleteConversation(conversation_id)
                 }
             } else {
                 messagesFailureToast.showToast();
@@ -190,6 +190,8 @@
             messagesFailureToast.showToast();
         }
     }
+
+   
 
       // message sending
       form.onsubmit = async function (event) {
@@ -223,6 +225,25 @@
         }
       }
       
+
+      //delete conversation
+
+      async function deleteConversation(conversationId) {
+         const deleteToast = Toastify({
+            text: "Conversation Deleted Successfully.",
+            duration: 1000,
+        }); 
+        try {
+          const response = await fetch(`/inbox/messages/${conversationId}`, {
+            method: "DELETE"
+          })
+          deleteToast.showToast()
+          location.reload(); 
+
+        } catch (error) {
+          console.log(error.message)
+        }
+      }
     
     </script>
   </body>
